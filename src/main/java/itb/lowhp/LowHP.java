@@ -19,87 +19,36 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.yaml.snakeyaml.Yaml;
 
 public final class LowHP extends JavaPlugin {
-    /*
-    public static Map<String, String> playersLife;
-    public static Map<String, String> advPlayers;
-    */
     public static Map<String, List<String>> playersList;
-/*
-    protected Map<String, String> readList(String name) throws FileNotFoundException {
-        InputStream inputStream = new FileInputStream(new File("plugins/LowHP/" + name + ".yml"));
-        Yaml yaml = new Yaml();
-        return yaml.load(inputStream);
-    }
 
-    protected static void writeList(String name) throws IOException {
-        PrintWriter writer = new PrintWriter(new File("plugins/LowHP/" + name + ".yml"));
-        Yaml yaml = new Yaml();
-        if (name.equals("players")) yaml.dump(playersLife, writer);
-        else yaml.dump(advPlayers, writer);
-    }
- */
-
-    protected Map<String, List<String>> readList() throws FileNotFoundException {
+    protected Map<String, List<String>> readList() throws IOException {
         InputStream inputStream = new FileInputStream(new File("plugins/LowHP/playerslist.yml"));
         Yaml yaml = new Yaml();
-        return yaml.load(inputStream);
+        Map<String, List<String>> now = yaml.load(inputStream);
+        inputStream.close();
+        return now;
     }
 
     protected static void writeList() throws IOException {
         PrintWriter writer = new PrintWriter(new File("plugins/LowHP/playerslist.yml"));
         Yaml yaml = new Yaml();
         yaml.dump(playersList, writer);
+        writer.close();
     }
 
 
     protected static void SetName(Player player) {
         String playerr = player.getName();
-        // int lifes = Integer.parseInt(LowHP.playersLife.get(playerr));
         int lifes = Integer.parseInt(LowHP.playersList.get(playerr).get(0));
         if (lifes > 0)
-            // player.setPlayerListName(ChatColor.RED + "[" + LowHP.playersLife.get(playerr) + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.advPlayers.get(playerr));
             player.setPlayerListName(ChatColor.RED + "[" + lifes + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.playersList.get(playerr).get(1));
         else
             player.setPlayerListName(ChatColor.DARK_PURPLE + "[" + -lifes + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.playersList.get(playerr).get(1));
 
     }
-
-    @Override
-    public void onEnable() {
-        Logger log = this.getLogger();
-        log.info("Start load...");
+    private void CreateFile(){
         File dir = new File("plugins/LowHP");
         dir.mkdir();
-        /*
-        File playersLists = new File("plugins/LowHP", "players.yml");
-        if (!playersLists.exists()) {
-            try {
-                playersLists.createNewFile();
-                Map<String, String> mapp = new HashMap();
-                mapp.put("Papaaaaa", "9");
-                PrintWriter writer = new PrintWriter("plugins/LowHP/players.yml");
-                Yaml yaml = new Yaml();
-                yaml.dump(mapp, writer);
-            } catch (IOException var8) {
-                var8.printStackTrace();
-            }
-        }
-
-        File advLists = new File("plugins/LowHP", "advancement.yml");
-        if (!advLists.exists()) {
-            try {
-                advLists.createNewFile();
-                Map<String, String> mapp = new HashMap();
-                mapp.put("Papaaaaa", "0");
-                PrintWriter writer = new PrintWriter("plugins/LowHP/advancement.yml");
-                Yaml yaml = new Yaml();
-                yaml.dump(mapp, writer);
-            } catch (IOException var8) {
-                var8.printStackTrace();
-            }
-        }
-
-         */
         File players = new File("plugins/LowHP", "playerslist.yml");
         if (!players.exists()) {
             try {
@@ -112,18 +61,58 @@ public final class LowHP extends JavaPlugin {
                 PrintWriter writer = new PrintWriter("plugins/LowHP/playerslist.yml");
                 Yaml yaml = new Yaml();
                 yaml.dump(mapp, writer);
+                writer.close();
             } catch (IOException var8) {
                 var8.printStackTrace();
             }
         }
+    }
 
+    private Map<String, String> readPrevList(String name) throws IOException {
+        InputStream inputStream = new FileInputStream(new File("plugins/LowHP/" + name + ".yml"));
+        Yaml yaml = new Yaml();
+        Map<String, String> now = yaml.load(inputStream);
+        inputStream.close();
+        return now;
+    }
+
+    private void CheckPrevFiles(){
+        File playersLists = new File("plugins/LowHP", "players.yml");
+        File advLists = new File("plugins/LowHP", "advancement.yml");
+        if (playersLists.exists() && advLists.exists()) {
+            try {
+                Map<String, List<String>> newList = new HashMap<>();
+                Map<String, String> playersLife = readPrevList("players");
+                Map<String, String> advPlayers = readPrevList("advancement");
+                for (String key : playersLife.keySet()){
+                    List<String> listt = new ArrayList<>();
+                    listt.add(playersLife.get(key));
+                    listt.add(advPlayers.get(key));
+                    newList.put(key,listt);
+                }
+                PrintWriter writer = new PrintWriter("plugins/LowHP/playerslist.yml");
+                Yaml yaml = new Yaml();
+                yaml.dump(newList, writer);
+                writer.close();
+            } catch (IOException var8) {
+                var8.printStackTrace();
+            }
+            playersLists.delete();
+            advLists.delete();
+        }
+    }
+
+
+    @Override
+    public void onEnable() {
+        Logger log = this.getLogger();
+        log.info("Start load...");
+
+        CheckPrevFiles();
+        CreateFile();
         try {
-            /*
-            playersLife = this.readList("players");
-            advPlayers = this.readList("advancement");
-             */
             playersList = readList();
-        } catch (FileNotFoundException var7) {
+        } catch (IOException var7) {
             var7.printStackTrace();
         }
 

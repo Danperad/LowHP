@@ -18,16 +18,12 @@ public class Commands implements CommandExecutor {
                     Player target = sender.getServer().getPlayer(args[1]);
                     String name = target.getName();
                     List<String> listt = LowHP.playersList.get(name);
-                    // int lifes = Integer.parseInt(args[2]) - Integer.parseInt(LowHP.playersLife.get(target.getName()));
-                    // LowHP.playersLife.replace(target.getName(), args[2]);
                     int lifes = Integer.parseInt(args[2]) - Integer.parseInt(LowHP.playersList.get(name).get(0));
                     listt.set(0,args[2]);
                     LowHP.playersList.replace(name, listt);
                     LowHP.SetName(target);
-                    // target.setPlayerListName(ChatColor.RED + "[" + LowHP.playersLife.get(target.getName()) + "] " + ChatColor.WHITE + target.getName() + " " + ChatColor.YELLOW + LowHP.advPlayers.get(target.getName()));
                     Objects.requireNonNull(target.getPlayer()).sendMessage(ChatColor.GRAY + "Administrators added " + lifes + " lives to you");
                     try {
-                        // LowHP.writeList("players");
                         LowHP.writeList();
                     } catch (IOException var7) {
                         var7.printStackTrace();
@@ -44,7 +40,6 @@ public class Commands implements CommandExecutor {
                         listt.set(0,args[2]);
                         LowHP.playersList.replace(args[1], listt);
                         try {
-                            // LowHP.writeList("players");
                             LowHP.writeList();
                         } catch (IOException var7) {
                             var7.printStackTrace();
@@ -62,12 +57,9 @@ public class Commands implements CommandExecutor {
                     String name = target.getName();
                     List<String> listt = LowHP.playersList.get(name);
                     listt.set(1,args[2]);
-                    // LowHP.advPlayers.replace(target.getName(), args[2]);
                     LowHP.playersList.replace(target.getName(), listt);
                     LowHP.SetName(target);
-                    //target.setPlayerListName(ChatColor.RED + "[" + LowHP.playersLife.get(target.getName()) + "] " + ChatColor.WHITE + target.getName() + " " + ChatColor.YELLOW + LowHP.advPlayers.get(target.getName()));
                     try {
-                        //LowHP.writeList("advancement");
                         LowHP.writeList();
                     } catch (IOException var7) {
                         var7.printStackTrace();
@@ -82,7 +74,6 @@ public class Commands implements CommandExecutor {
                         listt.set(1,args[2]);
                         LowHP.playersList.replace(args[1], listt);
                         try {
-                            // LowHP.writeList("advancement");
                             LowHP.writeList();
                         } catch (IOException var7) {
                             var7.printStackTrace();
@@ -108,12 +99,10 @@ public class Commands implements CommandExecutor {
                 target.setHealth(20.0);
                 List<String> listt = LowHP.playersList.get(target.getName());
                 listt.set(0,"0");
-                // LowHP.playersLife.replace(target.getName(), String.valueOf(0));
                 LowHP.playersList.replace(target.getName(), listt);
                 LowHP.SetName(target);
                 try {
                     LowHP.writeList();
-                    // LowHP.writeList("players");
                 } catch (IOException var7) {
                     var7.printStackTrace();
                 }
