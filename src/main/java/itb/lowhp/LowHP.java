@@ -21,7 +21,7 @@ import org.yaml.snakeyaml.Yaml;
 public final class LowHP extends JavaPlugin {
     public static Map<String, List<String>> playersList;
 
-    protected Map<String, List<String>> readList() throws IOException {
+    private Map<String, List<String>> readList() throws IOException {
         InputStream inputStream = new FileInputStream(new File("plugins/LowHP/playerslist.yml"));
         Yaml yaml = new Yaml();
         Map<String, List<String>> now = yaml.load(inputStream);
@@ -46,7 +46,8 @@ public final class LowHP extends JavaPlugin {
             player.setPlayerListName(ChatColor.DARK_PURPLE + "[" + -lifes + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.playersList.get(playerr).get(1));
 
     }
-    private void CreateFile(){
+
+    private void CreateFile() {
         File dir = new File("plugins/LowHP");
         dir.mkdir();
         File players = new File("plugins/LowHP", "playerslist.yml");
@@ -68,47 +69,11 @@ public final class LowHP extends JavaPlugin {
         }
     }
 
-    private Map<String, String> readPrevList(String name) throws IOException {
-        InputStream inputStream = new FileInputStream(new File("plugins/LowHP/" + name + ".yml"));
-        Yaml yaml = new Yaml();
-        Map<String, String> now = yaml.load(inputStream);
-        inputStream.close();
-        return now;
-    }
-
-    private void CheckPrevFiles(){
-        File playersLists = new File("plugins/LowHP", "players.yml");
-        File advLists = new File("plugins/LowHP", "advancement.yml");
-        if (playersLists.exists() && advLists.exists()) {
-            try {
-                Map<String, List<String>> newList = new HashMap<>();
-                Map<String, String> playersLife = readPrevList("players");
-                Map<String, String> advPlayers = readPrevList("advancement");
-                for (String key : playersLife.keySet()){
-                    List<String> listt = new ArrayList<>();
-                    listt.add(playersLife.get(key));
-                    listt.add(advPlayers.get(key));
-                    newList.put(key,listt);
-                }
-                PrintWriter writer = new PrintWriter("plugins/LowHP/playerslist.yml");
-                Yaml yaml = new Yaml();
-                yaml.dump(newList, writer);
-                writer.close();
-            } catch (IOException var8) {
-                var8.printStackTrace();
-            }
-            playersLists.delete();
-            advLists.delete();
-        }
-    }
-
-
     @Override
     public void onEnable() {
         Logger log = this.getLogger();
         log.info("Start load...");
 
-        CheckPrevFiles();
         CreateFile();
         try {
             playersList = readList();
