@@ -6,9 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -19,12 +17,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.yaml.snakeyaml.Yaml;
 
 public final class LowHP extends JavaPlugin {
-    /*
     public static Map<String, String> playersLife;
     public static Map<String, String> advPlayers;
-    */
-    public static Map<String, List<String>> playersList;
-/*
     protected Map<String, String> readList(String name) throws FileNotFoundException {
         InputStream inputStream = new FileInputStream(new File("plugins/LowHP/" + name + ".yml"));
         Yaml yaml = new Yaml();
@@ -37,40 +31,24 @@ public final class LowHP extends JavaPlugin {
         if (name.equals("players")) yaml.dump(playersLife, writer);
         else yaml.dump(advPlayers, writer);
     }
- */
-
-    protected Map<String, List<String>> readList() throws FileNotFoundException {
-        InputStream inputStream = new FileInputStream(new File("plugins/LowHP/playerslist.yml"));
-        Yaml yaml = new Yaml();
-        return yaml.load(inputStream);
-    }
-
-    protected static void writeList() throws IOException {
-        PrintWriter writer = new PrintWriter(new File("plugins/LowHP/playerslist.yml"));
-        Yaml yaml = new Yaml();
-        yaml.dump(playersList, writer);
-    }
 
 
     protected static void SetName(Player player) {
         String playerr = player.getName();
-        // int lifes = Integer.parseInt(LowHP.playersLife.get(playerr));
-        int lifes = Integer.parseInt(LowHP.playersList.get(playerr).get(0));
+        int lifes = Integer.parseInt(LowHP.playersLife.get(playerr));
         if (lifes > 0)
-            // player.setPlayerListName(ChatColor.RED + "[" + LowHP.playersLife.get(playerr) + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.advPlayers.get(playerr));
-            player.setPlayerListName(ChatColor.RED + "[" + lifes + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.playersList.get(playerr).get(1));
+            player.setPlayerListName(ChatColor.RED + "[" + lifes + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.advPlayers.get(playerr));
         else
-            player.setPlayerListName(ChatColor.DARK_PURPLE + "[" + -lifes + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.playersList.get(playerr).get(1));
+            player.setPlayerListName(ChatColor.DARK_PURPLE + "[" + -lifes + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.advPlayers.get(playerr));
 
     }
 
     @Override
     public void onEnable() {
-        Logger log = this.getLogger();
+        Logger log = getLogger();
         log.info("Start load...");
         File dir = new File("plugins/LowHP");
         dir.mkdir();
-        /*
         File playersLists = new File("plugins/LowHP", "players.yml");
         if (!playersLists.exists()) {
             try {
@@ -99,30 +77,9 @@ public final class LowHP extends JavaPlugin {
             }
         }
 
-         */
-        File players = new File("plugins/LowHP", "playerslist.yml");
-        if (!players.exists()) {
-            try {
-                players.createNewFile();
-                List<String> listt = new ArrayList<>();
-                listt.add("9");
-                listt.add("-1");
-                Map<String, List<String>> mapp = new HashMap();
-                mapp.put("Papaaaaa", listt);
-                PrintWriter writer = new PrintWriter("plugins/LowHP/playerslist.yml");
-                Yaml yaml = new Yaml();
-                yaml.dump(mapp, writer);
-            } catch (IOException var8) {
-                var8.printStackTrace();
-            }
-        }
-
         try {
-            /*
-            playersLife = this.readList("players");
-            advPlayers = this.readList("advancement");
-             */
-            playersList = readList();
+            playersLife = readList("players");
+            advPlayers = readList("advancement");
         } catch (FileNotFoundException var7) {
             var7.printStackTrace();
         }
@@ -138,7 +95,7 @@ public final class LowHP extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Logger log = this.getLogger();
+        Logger log = getLogger();
         log.info("Oops :(");
     }
 }
