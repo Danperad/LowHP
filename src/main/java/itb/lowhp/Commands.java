@@ -28,7 +28,7 @@ public class Commands implements CommandExecutor {
                     } catch (IOException var7) {
                         var7.printStackTrace();
                     }
-                    target.setMaxHealth(2.0);
+                    if (Integer.parseInt(args[2]) > 0) target.setMaxHealth(2.0);
                     sender.sendMessage("Complete!");
                     return true;
                 } catch (NullPointerException e) {

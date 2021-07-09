@@ -30,8 +30,8 @@ public class EventsListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent e) throws IOException {
         String playerr = e.getEntity().getName();
         List<String> listt = LowHP.playersList.get(playerr);
-        int hp = Integer.parseInt(LowHP.playersList.get(playerr).get(0));
-        listt.set(0,String.valueOf(hp-1));
+        int hp = Integer.parseInt(LowHP.playersList.get(playerr).get(0)) -1;
+        listt.set(0,String.valueOf(hp));
         LowHP.playersList.replace(playerr, listt);
         LowHP.writeList();
         if (hp < 1) {
