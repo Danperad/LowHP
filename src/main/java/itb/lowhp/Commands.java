@@ -113,6 +113,9 @@ public class Commands implements CommandExecutor {
             }
             sender.sendMessage("Complete!");
             return true;
-        } else return false;
+        } else {
+            sender.sendMessage("Command not found");
+            return true;
+        }
     }
 }
