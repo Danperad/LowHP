@@ -79,7 +79,6 @@ public final class LowHP extends JavaPlugin {
             this.getConfig().set("lifeAfterDeath", false); // Жизнь после смерти
             this.getConfig().set("hp", 2); // Количество здоровья до
             this.getConfig().set("hpAfter", 20); // Количество здоровья после
-            this.getConfig().set("bac", false); // Blaze and Caves
             this.getConfig().set("lifes", 9); // Количество жизней
             this.getConfig().set("advToLife", false); // Достижения за жизнь
             this.getConfig().set("advsForLife", 1); // Достижений для жизни

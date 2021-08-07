@@ -15,7 +15,6 @@ public class EventsListener implements Listener {
     boolean after = LowHP.getConf().getBoolean("lifeAfterDeath");
     boolean hardLife = LowHP.getConf().getBoolean("hardLife");
     int lifes = LowHP.getConf().getInt("lifes");
-    boolean bac = LowHP.getConf().getBoolean("bac");
     double hp = Double.parseDouble(LowHP.getConf().getString("hp"));
     double hpafter = Double.parseDouble(LowHP.getConf().getString("hpAfter"));
     boolean advtolife = LowHP.getConf().getBoolean("advToLife");
@@ -27,8 +26,7 @@ public class EventsListener implements Listener {
             List<String> listt = new ArrayList<>();
             if (hardLife) listt.add(String.valueOf(lifes));
             else listt.add("0");
-            if (bac) listt.add("-1");
-            else listt.add("0");
+            listt.add("0");
             LowHP.playersList.put(e.getPlayer().getName(), listt);
             e.getPlayer().setMaxHealth(hp);
             LowHP.writeList();

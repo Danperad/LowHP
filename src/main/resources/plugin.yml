@@ -1,7 +1,7 @@
 name: LowHP
 version: ${project.version}
 main: itb.lowhp.LowHP
-api-version: 1.12
+api-version: 1.17
 commands:
   lowhp:
     description: Set custom Life to player
