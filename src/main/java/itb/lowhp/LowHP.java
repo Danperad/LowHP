@@ -37,24 +37,26 @@ public final class LowHP extends JavaPlugin {
         writer.close();
     }
 
-    public static FileConfiguration getConf(){
+    public static FileConfiguration getConf() {
         return config;
     }
 
     protected static void SetName(Player player) {
         String playerr = player.getName();
         int lifes = Integer.parseInt(LowHP.playersList.get(playerr).get(0));
-        if (lifes > 0)
-            player.setPlayerListName(ChatColor.RED + "[" + lifes + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.playersList.get(playerr).get(1));
-        else
-            player.setPlayerListName(ChatColor.DARK_PURPLE + "[" + -lifes + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.playersList.get(playerr).get(1));
-
+        if (config.getBoolean("hardLife")) {
+            if (lifes > 0 && !config.getBoolean("lifeAfterDeath"))
+                player.setPlayerListName(ChatColor.RED + "[" + lifes + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.playersList.get(playerr).get(1));
+            else
+                player.setPlayerListName(ChatColor.DARK_PURPLE + "[" + -lifes + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.playersList.get(playerr).get(1));
+        }
+        else player.setPlayerListName(ChatColor.DARK_PURPLE + "[" + lifes + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.playersList.get(playerr).get(1));
     }
 
     private void CreateFile() {
-        File dir = new File("plugins/LowHP");
+        File dir = getDataFolder();
         dir.mkdir();
-        File players = new File("plugins/LowHP", "playerslist.yml");
+        File players = new File(getDataFolder(), "playerslist.yml");
         if (!players.exists()) {
             try {
                 players.createNewFile();
@@ -71,7 +73,7 @@ public final class LowHP extends JavaPlugin {
                 var8.printStackTrace();
             }
         }
-        File conf = new File("plugins/LowHP", "config.yml");
+        File conf = new File(getDataFolder(), "config.yml");
         if (!conf.exists()) {
             this.getConfig().set("hardLife", true); // Жизни в минус
             this.getConfig().set("lifeAfterDeath", false); // Жизнь после смерти
@@ -80,7 +82,7 @@ public final class LowHP extends JavaPlugin {
             this.getConfig().set("bac", false); // Blaze and Caves
             this.getConfig().set("lifes", 9); // Количество жизней
             this.getConfig().set("advToLife", false); // Достижения за жизнь
-            this.getConfig().set("advsForLife", -1); // Достижений для жизни
+            this.getConfig().set("advsForLife", 1); // Достижений для жизни
             try {
                 conf.createNewFile();
                 this.getConfig().save(conf);
@@ -97,6 +99,10 @@ public final class LowHP extends JavaPlugin {
         log.info("Start load...");
         CreateFile();
         config = this.getConfig();
+        if (config.getBoolean("advToLife") && config.getDouble("advsForLife") <= 0) {
+            log.info("Error advsForLife");
+            onDisable();
+        }
         try {
             playersList = readList();
         } catch (IOException var7) {

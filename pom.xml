@@ -6,7 +6,7 @@
 
     <groupId>itb</groupId>
     <artifactId>LowHP</artifactId>
-    <version>1.0-RELEASE</version>
+    <version>1.0.1-RELEASE</version>
     <packaging>jar</packaging>
 
     <name>LowHP</name>

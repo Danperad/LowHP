@@ -9,12 +9,15 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 public class ConstructTabCompleter implements TabCompleter {
+    boolean hardLife = LowHP.getConf().getBoolean("hardLife");
+    boolean after = LowHP.getConf().getBoolean("lifeAfterDeath");
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (!(sender instanceof Player)) return null;
         if (command.getName().equalsIgnoreCase("lowhp") && args.length == 1) {
             List<String> list = new ArrayList<>();
-            if (!LowHP.getConf().getBoolean("hardLife") && LowHP.getConf().getBoolean("lifeAfterDeath")) list.add("outme");
+            if (!hardLife && after) list.add("outme");
             if (sender.hasPermission("lowhp.admin")) {
                 list.add("setlifes");
                 list.add("setadv");
