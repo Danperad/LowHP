@@ -19,7 +19,7 @@ public class Commands implements CommandExecutor {
                     String name = target.getName();
                     List<String> listt = LowHP.playersList.get(name);
                     int lifes = Integer.parseInt(args[2]) - Integer.parseInt(LowHP.playersList.get(name).get(0));
-                    listt.set(0,args[2]);
+                    listt.set(0, args[2]);
                     LowHP.playersList.replace(name, listt);
                     LowHP.SetName(target);
                     Objects.requireNonNull(target.getPlayer()).sendMessage(ChatColor.GRAY + "Administrators added " + lifes + " lives to you");
@@ -37,7 +37,7 @@ public class Commands implements CommandExecutor {
                         return true;
                     } else {
                         List<String> listt = LowHP.playersList.get(args[1]);
-                        listt.set(0,args[2]);
+                        listt.set(0, args[2]);
                         LowHP.playersList.replace(args[1], listt);
                         try {
                             LowHP.writeList();
@@ -56,7 +56,7 @@ public class Commands implements CommandExecutor {
                     Player target = sender.getServer().getPlayer(args[1]);
                     String name = target.getName();
                     List<String> listt = LowHP.playersList.get(name);
-                    listt.set(1,args[2]);
+                    listt.set(1, args[2]);
                     LowHP.playersList.replace(target.getName(), listt);
                     LowHP.SetName(target);
                     try {
@@ -71,7 +71,7 @@ public class Commands implements CommandExecutor {
                         return true;
                     } else {
                         List<String> listt = LowHP.playersList.get(args[1]);
-                        listt.set(1,args[2]);
+                        listt.set(1, args[2]);
                         LowHP.playersList.replace(args[1], listt);
                         try {
                             LowHP.writeList();
@@ -85,7 +85,7 @@ public class Commands implements CommandExecutor {
                 sender.sendMessage("Неверный формат команды");
             } else if (args[0].equalsIgnoreCase("setadv") && !sender.hasPermission("lowhp.admin")) {
                 sender.sendMessage("You don't have Permission");
-            } else if (args[0].equalsIgnoreCase("outme") && sender.getServer().getPlayer(sender.getName()).getMaxHealth() < 20.0) {
+            } else if (args[0].equalsIgnoreCase("outme") && sender.getServer().getPlayer(sender.getName()).getMaxHealth() < Double.parseDouble(LowHP.getConf().getString("hpAfter")) && !LowHP.getConf().getBoolean("hardLife") && LowHP.getConf().getBoolean("lifeAfterDeath")) {
                 Player target;
                 if (sender instanceof Player) {
                     target = (Player) sender;
@@ -95,10 +95,10 @@ public class Commands implements CommandExecutor {
                     sender.sendMessage("Неверный формат");
                     return true;
                 }
-                target.setMaxHealth(20.0);
+                target.setMaxHealth(Double.parseDouble(LowHP.getConf().getString("hpAfter")));
                 target.setHealth(20.0);
                 List<String> listt = LowHP.playersList.get(target.getName());
-                listt.set(0,"0");
+                listt.set(0, "0");
                 LowHP.playersList.replace(target.getName(), listt);
                 LowHP.SetName(target);
                 try {
@@ -106,12 +106,10 @@ public class Commands implements CommandExecutor {
                 } catch (IOException var7) {
                     var7.printStackTrace();
                 }
-
                 sender.sendMessage("Complete!");
             } else if (args[0].equalsIgnoreCase("outme")) {
-                sender.sendMessage("You already in this mode");
+                sender.sendMessage("No No NOOO!!!");
             }
-            sender.sendMessage("Complete!");
             return true;
         } else {
             sender.sendMessage("Command not found");

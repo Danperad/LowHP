@@ -2,7 +2,6 @@ package itb.lowhp;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -14,12 +13,14 @@ import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.yaml.snakeyaml.Yaml;
 
 public final class LowHP extends JavaPlugin {
     public static Map<String, List<String>> playersList;
+    private static FileConfiguration config;
 
     private Map<String, List<String>> readList() throws IOException {
         InputStream inputStream = new FileInputStream(new File("plugins/LowHP/playerslist.yml"));
@@ -36,6 +37,9 @@ public final class LowHP extends JavaPlugin {
         writer.close();
     }
 
+    public static FileConfiguration getConf(){
+        return config;
+    }
 
     protected static void SetName(Player player) {
         String playerr = player.getName();
@@ -67,14 +71,32 @@ public final class LowHP extends JavaPlugin {
                 var8.printStackTrace();
             }
         }
+        File conf = new File("plugins/LowHP", "config.yml");
+        if (!conf.exists()) {
+            this.getConfig().set("hardLife", true); // Жизни в минус
+            this.getConfig().set("lifeAfterDeath", false); // Жизнь после смерти
+            this.getConfig().set("hp", 2); // Количество здоровья до
+            this.getConfig().set("hpAfter", 20); // Количество здоровья после
+            this.getConfig().set("bac", false); // Blaze and Caves
+            this.getConfig().set("lifes", 9); // Количество жизней
+            this.getConfig().set("advToLife", false); // Достижения за жизнь
+            this.getConfig().set("advsForLife", -1); // Достижений для жизни
+            try {
+                conf.createNewFile();
+                this.getConfig().save(conf);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     @Override
     public void onEnable() {
         Logger log = this.getLogger();
         log.info("Start load...");
-
         CreateFile();
+        config = this.getConfig();
         try {
             playersList = readList();
         } catch (IOException var7) {

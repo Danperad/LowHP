@@ -14,7 +14,7 @@ public class ConstructTabCompleter implements TabCompleter {
         if (!(sender instanceof Player)) return null;
         if (command.getName().equalsIgnoreCase("lowhp") && args.length == 1) {
             List<String> list = new ArrayList<>();
-            list.add("outme");
+            if (!LowHP.getConf().getBoolean("hardLife") && LowHP.getConf().getBoolean("lifeAfterDeath")) list.add("outme");
             if (sender.hasPermission("lowhp.admin")) {
                 list.add("setlifes");
                 list.add("setadv");
