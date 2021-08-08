@@ -17,8 +17,7 @@ public class EventsListener implements Listener {
     int lifes = LowHP.getConf().getInt("lifes");
     double hp = Double.parseDouble(LowHP.getConf().getString("hp"));
     double hpafter = Double.parseDouble(LowHP.getConf().getString("hpAfter"));
-    boolean advtolife = LowHP.getConf().getBoolean("advToLife");
-    double advforlife = LowHP.getConf().getDouble("advsForLife");
+    int advforlife = LowHP.getConf().getInt("advsForLife");
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) throws IOException {
@@ -62,7 +61,7 @@ public class EventsListener implements Listener {
         int adv = Integer.parseInt(LowHP.playersList.get(playerr).get(1))+1;
         List<String> listt = LowHP.playersList.get(playerr);
         listt.set(1,String.valueOf(adv));
-        if (advtolife && adv % advforlife == 0 && adv > 0 && Integer.parseInt(LowHP.playersList.get(playerr).get(0)) > 0) {
+        if (advforlife > 0 && adv % advforlife == 0 && adv > 0 && Integer.parseInt(LowHP.playersList.get(playerr).get(0)) > 0) {
             int hp = Integer.parseInt(LowHP.playersList.get(playerr).get(0));
             listt.set(0,String.valueOf(hp+1));
             e.getPlayer().sendMessage(ChatColor.AQUA + "+1 Life for completing 50 Advancements");
