@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +24,9 @@ public final class LowHP extends JavaPlugin {
     private Map<String, List<String>> readList() throws IOException {
         InputStream inputStream = new FileInputStream(new File("plugins/LowHP/playerslist.yml"));
         Yaml yaml = new Yaml();
+        if (yaml.load(inputStream) == null){
+            return null;
+        }
         Map<String, List<String>> now = yaml.load(inputStream);
         inputStream.close();
         return now;
@@ -60,15 +62,6 @@ public final class LowHP extends JavaPlugin {
         if (!players.exists()) {
             try {
                 players.createNewFile();
-                List<String> listt = new ArrayList<>();
-                listt.add("9");
-                listt.add("-1");
-                Map<String, List<String>> mapp = new HashMap();
-                mapp.put("Papaaaaa", listt);
-                PrintWriter writer = new PrintWriter("plugins/LowHP/playerslist.yml");
-                Yaml yaml = new Yaml();
-                yaml.dump(mapp, writer);
-                writer.close();
             } catch (IOException var8) {
                 var8.printStackTrace();
             }
@@ -103,6 +96,9 @@ public final class LowHP extends JavaPlugin {
         }
         try {
             playersList = readList();
+            if (playersList == null){
+                playersList = new HashMap<>();
+            }
         } catch (IOException var7) {
             var7.printStackTrace();
         }
