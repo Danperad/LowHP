@@ -11,18 +11,17 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.yaml.snakeyaml.Yaml;
 
 public final class LowHP extends JavaPlugin {
-    public static Map<String, List<String>> playersList;
+    protected static Map<String, List<String>> playersList;
     private static FileConfiguration config;
 
     private Map<String, List<String>> readList() throws IOException {
-        InputStream inputStream = new FileInputStream(new File("plugins/LowHP/playerslist.yml"));
+        InputStream inputStream = new FileInputStream(new File(getDataFolder(),"playerslist.yml"));
         Yaml yaml = new Yaml();
         if (yaml.load(inputStream) == null){
             return null;
@@ -46,13 +45,14 @@ public final class LowHP extends JavaPlugin {
     protected static void SetName(Player player) {
         String playerr = player.getName();
         int lifes = Integer.parseInt(LowHP.playersList.get(playerr).get(0));
+        String twoname = ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.playersList.get(playerr).get(1);
         if (config.getBoolean("hardLife")) {
             if (lifes > 0 && !config.getBoolean("lifeAfterDeath"))
-                player.setPlayerListName(ChatColor.RED + "[" + lifes + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.playersList.get(playerr).get(1));
+                player.setPlayerListName(ChatColor.RED + "[" + lifes + "] " + twoname);
             else
-                player.setPlayerListName(ChatColor.DARK_PURPLE + "[" + -lifes + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.playersList.get(playerr).get(1));
+                player.setPlayerListName(ChatColor.DARK_PURPLE + "[" + -lifes + "] " + twoname);
         }
-        else player.setPlayerListName(ChatColor.DARK_PURPLE + "[" + lifes + "] " + ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.playersList.get(playerr).get(1));
+        else player.setPlayerListName(ChatColor.DARK_PURPLE + "[" + lifes + "] " + twoname);
     }
 
     private void CreateFile() {
@@ -90,7 +90,8 @@ public final class LowHP extends JavaPlugin {
         log.info("Start load...");
         CreateFile();
         config = this.getConfig();
-        if (config.getBoolean("advToLife") && config.getDouble("advsForLife") <= 0) {
+        if (!config.getBoolean("hardlife") && config.getBoolean("lifeAfterDeath")) {
+            config.set("lifeAfterDeath", false);
             log.info("Error advsForLife");
             onDisable();
         }
@@ -103,11 +104,11 @@ public final class LowHP extends JavaPlugin {
             var7.printStackTrace();
         }
 
-        Commands handler = new Commands();
-        TabCompleter completer = new ConstructTabCompleter();
         getServer().getPluginManager().registerEvents(new EventsListener(), this);
-        getCommand("LowHP").setExecutor(handler);
-        getCommand("LowHP").setTabCompleter(completer);
+        getCommand("LowHP").setExecutor(new CommandsLowHP());
+        getCommand("LowHPAdm").setExecutor(new CommandsLowHPAdmin());
+        getCommand("LowHP").setTabCompleter(new ConstructTabCompleterLowHP());
+        getCommand("LowHPAdm").setTabCompleter(new ConstructTabCompleterLowHPAdmin());
         log.info("Let the game begin!");
 
     }

@@ -4,5 +4,9 @@ main: itb.lowhp.LowHP
 api-version: 1.14
 commands:
   lowhp:
-    description: Set custom Life to player
-    usage: /LowHP [commands] [Player] [NumLife]
+    description: Player Command
+    usage: /LowHP [commands]
+  lowhpadm:
+    description: Admin Commands
+    usage: /LowHPAdm [commands] [Player]
+    permission: lowhp.admin
