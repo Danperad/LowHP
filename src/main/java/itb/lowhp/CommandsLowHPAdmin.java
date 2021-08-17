@@ -10,6 +10,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class CommandsLowHPAdmin implements CommandExecutor {
+    boolean hardLife = LowHP.getConf().getBoolean("hardLife");
+    boolean after = LowHP.getConf().getBoolean("lifeAfterDeath");
+    double hp = Double.parseDouble(LowHP.getConf().getString("hp"));
+    double hpafter = Double.parseDouble(LowHP.getConf().getString("hpAfter"));
+
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("lowhpadm") && sender.hasPermission("lowhp.admin")) {
             switch (args[0]) {
@@ -29,7 +34,15 @@ public class CommandsLowHPAdmin implements CommandExecutor {
                             } catch (IOException var7) {
                                 var7.printStackTrace();
                             }
-                            if (Integer.parseInt(args[2]) > 0) target.setMaxHealth(2.0);
+                            if (Integer.parseInt(args[2]) > 0 && hardLife) target.setMaxHealth(hp);
+                            else if (Integer.parseInt(args[2]) <= 0 && hardLife && after) {
+                                target.setMaxHealth(hpafter);
+                                target.setHealth(hpafter);
+                            }
+                            else {
+                                target.setMaxHealth(hp);
+                                target.setHealth(hp);
+                            }
                             sender.sendMessage("Complete!");
                             return true;
                         } catch (NullPointerException e) {
