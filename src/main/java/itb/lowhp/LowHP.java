@@ -19,9 +19,10 @@ import org.yaml.snakeyaml.Yaml;
 public final class LowHP extends JavaPlugin {
     protected static Map<String, List<String>> playersList;
     private static FileConfiguration config;
+    Logger log = this.getLogger();
 
     private Map<String, List<String>> readList() throws IOException {
-        InputStream inputStream = new FileInputStream(new File(getDataFolder(),"playerslist.yml"));
+        InputStream inputStream = new FileInputStream(new File("plugins/LowHP/playerslist.yml"));
         Yaml yaml = new Yaml();
         if (yaml.load(inputStream) == null){
             return null;
@@ -44,21 +45,27 @@ public final class LowHP extends JavaPlugin {
 
     protected static void SetName(Player player) {
         String playerr = player.getName();
-        int lifes = Integer.parseInt(LowHP.playersList.get(playerr).get(0));
-        String twoname = ChatColor.WHITE + playerr + " " + ChatColor.YELLOW + LowHP.playersList.get(playerr).get(1);
+        List<String> listt = playersList.get(playerr);
+        int lifes = Integer.parseInt(listt.get(0));
+        int adv = Integer.parseInt(listt.get(1));
+        String twoname;
+        if (player.getWorld().getName().equals("world")) {
+            twoname = ChatColor.GREEN + playerr + " " + ChatColor.YELLOW + adv;
+        } else if (player.getWorld().getName().equals("world_nether")) {
+            twoname = ChatColor.RED + playerr + " " + ChatColor.YELLOW + adv;
+        } else twoname = ChatColor.DARK_PURPLE + playerr + " " + ChatColor.YELLOW + adv;
         if (config.getBoolean("hardLife")) {
             if (lifes > 0 && !config.getBoolean("lifeAfterDeath"))
                 player.setPlayerListName(ChatColor.RED + "[" + lifes + "] " + twoname);
             else
-                player.setPlayerListName(ChatColor.DARK_PURPLE + "[" + -lifes + "] " + twoname);
-        }
-        else player.setPlayerListName(ChatColor.DARK_PURPLE + "[" + lifes + "] " + twoname);
+                player.setPlayerListName(ChatColor.LIGHT_PURPLE + "[" + -lifes + "] " + twoname);
+        } else player.setPlayerListName(ChatColor.LIGHT_PURPLE + "[" + lifes + "] " + twoname);
     }
 
     private void CreateFile() {
         File dir = getDataFolder();
         dir.mkdir();
-        File players = new File(getDataFolder(), "playerslist.yml");
+        File players = new File("plugins/LowHP/playerslist.yml");
         if (!players.exists()) {
             try {
                 players.createNewFile();
@@ -66,7 +73,7 @@ public final class LowHP extends JavaPlugin {
                 var8.printStackTrace();
             }
         }
-        File conf = new File(getDataFolder(), "config.yml");
+        File conf = new File("plugins/LowHP/config.yml");
         if (!conf.exists()) {
             this.getConfig().set("hardLife", true); // Жизни в минус
             this.getConfig().set("lifeAfterDeath", false); // Жизнь после смерти
@@ -86,7 +93,6 @@ public final class LowHP extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        Logger log = this.getLogger();
         log.info("Start load...");
         CreateFile();
         config = this.getConfig();
@@ -115,7 +121,11 @@ public final class LowHP extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Logger log = this.getLogger();
+        try {
+            writeList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         log.info("Oops :(");
     }
 }
