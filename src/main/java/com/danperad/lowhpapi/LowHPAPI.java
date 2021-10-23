@@ -12,8 +12,15 @@ import java.util.logging.Logger;
 public final class LowHPAPI extends JavaPlugin {
     static PlayerList playersList;
     Logger log = this.getLogger();
+    static API api;
 
-    public static PlayerList getPlayersList(){return playersList;}
+    public static PlayerList getPlayersList() {
+        return playersList;
+    }
+
+    public static API getAPI() {
+        return api;
+    }
 
     private Map<String, Integer> readList() throws IOException {
         InputStream inputStream = new FileInputStream("plugins/LowHPAPI/playerslist.yml");
@@ -45,9 +52,9 @@ public final class LowHPAPI extends JavaPlugin {
             Map<String, Integer> temp = readList();
             if (temp == null) {
                 playersList = new PlayerList();
-            }
-            else playersList = new PlayerList(temp);
+            } else playersList = new PlayerList(temp);
             log.info("Complete load PlayerList");
+            api = new API(playersList);
         } catch (IOException e) {
             e.printStackTrace();
             onDisable();
