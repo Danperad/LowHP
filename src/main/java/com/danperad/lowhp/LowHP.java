@@ -1,49 +1,33 @@
-package itb.lowhp;
+package com.danperad.lowhp;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
-import org.bukkit.ChatColor;
+import com.danperad.lowhp.commands.CommandsLowHP;
+import com.danperad.lowhp.commands.CommandsLowHPAdmin;
+import com.danperad.lowhp.commands.ConstructTabCompleterLowHP;
+import com.danperad.lowhp.commands.ConstructTabCompleterLowHPAdmin;
+import com.danperad.lowhp.events.PlayerDeathListener;
+import com.danperad.lowhp.events.PlayerGetAdvListener;
+import com.danperad.lowhp.events.PlayerJoinListener;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.yaml.snakeyaml.Yaml;
 
 public final class LowHP extends JavaPlugin {
-    protected static Map<String, List<String>> playersList;
     private static FileConfiguration config;
     Logger log = this.getLogger();
-
-    private Map<String, List<String>> readList() throws IOException {
-        InputStream inputStream = new FileInputStream(new File("plugins/LowHP/playerslist.yml"));
-        Yaml yaml = new Yaml();
-        if (yaml.load(inputStream) == null){
-            return null;
-        }
-        Map<String, List<String>> now = yaml.load(inputStream);
-        inputStream.close();
-        return now;
-    }
-
-    protected static void writeList() throws IOException {
-        PrintWriter writer = new PrintWriter(new File("plugins/LowHP/playerslist.yml"));
-        Yaml yaml = new Yaml();
-        yaml.dump(playersList, writer);
-        writer.close();
-    }
-
+    private static boolean isEnabled = false;
     public static FileConfiguration getConf() {
         return config;
     }
 
-    protected static void SetName(Player player) {
+    public static boolean getPluginSetName(){
+        return isEnabled;
+    }
+
+    /*protected static void SetName(Player player) {
         String playerr = player.getName();
         List<String> listt = playersList.get(playerr);
         int lifes = Integer.parseInt(listt.get(0));
@@ -60,19 +44,11 @@ public final class LowHP extends JavaPlugin {
             else
                 player.setPlayerListName(ChatColor.LIGHT_PURPLE + "[" + -lifes + "] " + twoname);
         } else player.setPlayerListName(ChatColor.LIGHT_PURPLE + "[" + lifes + "] " + twoname);
-    }
+    }*/
 
     private void CreateFile() {
         File dir = getDataFolder();
         dir.mkdir();
-        File players = new File("plugins/LowHP/playerslist.yml");
-        if (!players.exists()) {
-            try {
-                players.createNewFile();
-            } catch (IOException var8) {
-                var8.printStackTrace();
-            }
-        }
         File conf = new File("plugins/LowHP/config.yml");
         if (!conf.exists()) {
             this.getConfig().set("hardLife", true); // Жизни в минус
@@ -87,7 +63,6 @@ public final class LowHP extends JavaPlugin {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -96,21 +71,12 @@ public final class LowHP extends JavaPlugin {
         log.info("Start load...");
         CreateFile();
         config = this.getConfig();
-        if (!config.getBoolean("hardlife") && config.getBoolean("lifeAfterDeath")) {
-            config.set("lifeAfterDeath", false);
-            log.info("Error advsForLife");
-            onDisable();
+        for (Plugin p : getServer().getPluginManager().getPlugins()) {
+            if (p.getName().equalsIgnoreCase("lowhpsetname")) isEnabled = true;
         }
-        try {
-            playersList = readList();
-            if (playersList == null){
-                playersList = new HashMap<>();
-            }
-        } catch (IOException var7) {
-            var7.printStackTrace();
-        }
-
-        getServer().getPluginManager().registerEvents(new EventsListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerGetAdvListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getCommand("LowHP").setExecutor(new CommandsLowHP());
         getCommand("LowHPAdm").setExecutor(new CommandsLowHPAdmin());
         getCommand("LowHP").setTabCompleter(new ConstructTabCompleterLowHP());
@@ -121,11 +87,6 @@ public final class LowHP extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        try {
-            writeList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         log.info("Oops :(");
     }
 }

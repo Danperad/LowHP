@@ -1,8 +1,9 @@
-package itb.lowhp;
+package com.danperad.lowhp.commands;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.danperad.lowhp.LowHP;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;

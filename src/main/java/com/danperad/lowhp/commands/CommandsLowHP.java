@@ -1,8 +1,6 @@
-package itb.lowhp;
+package com.danperad.lowhp.commands;
 
-import java.io.IOException;
-import java.util.List;
-
+import com.danperad.lowhp.LowHP;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,7 +9,7 @@ import org.bukkit.entity.Player;
 public class CommandsLowHP implements CommandExecutor {
     boolean after = LowHP.getConf().getBoolean("lifeAfterDeath");
     boolean hardLife = LowHP.getConf().getBoolean("hardLife");
-    double hpafter = Double.parseDouble(LowHP.getConf().getString("hpAfter"));
+    double hpafter = LowHP.getConf().getDouble("hpAfter");
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("lowhp")) {
@@ -28,15 +26,6 @@ public class CommandsLowHP implements CommandExecutor {
                     }
                     target.setMaxHealth(hpafter);
                     target.setHealth(hpafter);
-                    List<String> listt = LowHP.playersList.get(target.getName());
-                    listt.set(0, "0");
-                    LowHP.playersList.replace(target.getName(), listt);
-                    LowHP.SetName(target);
-                    try {
-                        LowHP.writeList();
-                    } catch (IOException var7) {
-                        var7.printStackTrace();
-                    }
                     sender.sendMessage("Complete!");
                 } else {
                     sender.sendMessage("No No NOOO!!!");

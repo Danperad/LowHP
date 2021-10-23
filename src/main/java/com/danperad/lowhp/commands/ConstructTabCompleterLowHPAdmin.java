@@ -1,4 +1,4 @@
-package itb.lowhp;
+package com.danperad.lowhp.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
