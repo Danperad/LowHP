@@ -1,4 +1,4 @@
-package com.danperad.lowhpapi.exceptions;
+package com.danperad.advcount.exceptions;
 
 public class PlayerNotExist extends Exception{
     private final String message;

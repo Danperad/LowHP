@@ -1,6 +1,6 @@
-package com.danperad.lowhpapi;
+package com.danperad.advcount;
 
-import com.danperad.lowhpapi.exceptions.PlayerNotExist;
+import com.danperad.advcount.exceptions.PlayerNotExist;
 
 public class API {
     private final PlayerList playerList;

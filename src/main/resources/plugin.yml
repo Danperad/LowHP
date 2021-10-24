@@ -1,4 +1,4 @@
-name: LowHPAPI
+name: AdvCount
 version: '${project.version}'
 main: com.danperad.LowHPAPI
 api-version: 1.14

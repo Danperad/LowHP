@@ -1,7 +1,7 @@
-package com.danperad.lowhpapi;
+package com.danperad.advcount;
 
-import com.danperad.lowhpapi.events.PlayerGetAdvListener;
-import com.danperad.lowhpapi.events.PlayerJoinListener;
+import com.danperad.advcount.events.PlayerGetAdvListener;
+import com.danperad.advcount.events.PlayerJoinListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.yaml.snakeyaml.Yaml;
 
@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public final class LowHPAPI extends JavaPlugin {
+public final class AdvCount extends JavaPlugin {
     static PlayerList playersList;
     Logger log = this.getLogger();
     static API api;
