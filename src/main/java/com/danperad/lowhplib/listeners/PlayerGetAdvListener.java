@@ -1,4 +1,4 @@
-package com.danperad.lowhplib.events;
+package com.danperad.lowhplib.listeners;
 
 import com.danperad.lowhplib.PlayerLow;
 import com.danperad.lowhplib.db.DAO;
