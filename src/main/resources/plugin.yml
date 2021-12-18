@@ -1,8 +1,7 @@
-name: LowHP
+name: ${project.name}
 version: ${project.version}
 main: itb.lowhp.LowHP
-depend: [LowHPAPI]
-softdepend: [LowHPAPI]
+depend: [LowHPLib]
 api-version: 1.14
 commands:
   lowhp:
