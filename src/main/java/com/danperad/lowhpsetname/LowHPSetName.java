@@ -21,8 +21,8 @@ public final class LowHPSetName extends JavaPlugin {
     @Override
     public void onEnable() {
         log.info("Start load...");
-        if (this.getServer().getPluginManager().getPlugin("LowHP") == null) {
-            log.info("LowHP dont installed");
+        if (this.getServer().getPluginManager().getPlugin("LowHPLib") == null) {
+            log.info("LowHPLib dont installed");
             return;
         }
         CreateFile();
