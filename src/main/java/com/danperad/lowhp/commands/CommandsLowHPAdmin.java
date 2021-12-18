@@ -3,6 +3,7 @@ package com.danperad.lowhp.commands;
 import com.danperad.lowhp.LowHP;
 import com.danperad.lowhplib.PlayerLow;
 import com.danperad.lowhplib.db.DAO;
+import com.danperad.lowhpsetname.SetName;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,7 +29,7 @@ public class CommandsLowHPAdmin implements CommandExecutor {
                             int lifes = Integer.parseInt(args[2]) - playerLow.getLifes();
                             playerLow.setLifes(Integer.parseInt(args[2]));
                             DAO.updatePlayer(playerLow);
-                            // if (LowHP.getPluginSetName()) LowHP.SetName(target);
+                            if(LowHP.isNameEnabled()) SetName.SetName(target);
                             target.getPlayer().sendMessage(ChatColor.GRAY + "Administrators added " + lifes + " lives to you");
                             if (playerLow.getLifes() > 0 && hardLife) target.setMaxHealth(hp);
                             else if (playerLow.getLifes() <= 0 && hardLife && after) {
@@ -55,6 +56,7 @@ public class CommandsLowHPAdmin implements CommandExecutor {
                         PlayerLow playerLow = DAO.getPlayer(target.getUniqueId().toString());
                         playerLow.setAdv(Integer.valueOf(args[2]));
                         DAO.updatePlayer(playerLow);
+                        SetName.SetName(target);
                         sender.sendMessage("Complete!");
                     } else {
                         sender.sendMessage("Неверный формат команды");

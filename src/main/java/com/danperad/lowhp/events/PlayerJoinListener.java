@@ -1,6 +1,7 @@
 package com.danperad.lowhp.events;
 
 import com.danperad.lowhp.LowHP;
+import com.danperad.lowhpsetname.SetName;
 import org.bukkit.Statistic;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.event.EventHandler;
@@ -18,5 +19,6 @@ public class PlayerJoinListener implements Listener {
         if(time == 0 || (maxhp != hp && maxhp != hpafter)){
             e.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(hp);
         }
+        if(LowHP.isNameEnabled()) SetName.SetName(e.getPlayer());
     }
 }

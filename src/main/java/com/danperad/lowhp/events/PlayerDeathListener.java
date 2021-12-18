@@ -3,6 +3,7 @@ package com.danperad.lowhp.events;
 import com.danperad.lowhp.LowHP;
 import com.danperad.lowhplib.PlayerLow;
 import com.danperad.lowhplib.db.DAO;
+import com.danperad.lowhpsetname.SetName;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -23,6 +24,7 @@ public class PlayerDeathListener implements Listener {
                 e.getEntity().setMaxHealth(hpafter);
             } else
                 e.getEntity().setGameMode(GameMode.SPECTATOR);
+            if(LowHP.isNameEnabled()) SetName.SetName(e.getEntity());
         }
     }
 }

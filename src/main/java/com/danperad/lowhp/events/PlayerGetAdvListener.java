@@ -3,6 +3,7 @@ package com.danperad.lowhp.events;
 import com.danperad.lowhp.LowHP;
 import com.danperad.lowhplib.PlayerLow;
 import com.danperad.lowhplib.db.DAO;
+import com.danperad.lowhpsetname.SetName;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -24,5 +25,6 @@ public class PlayerGetAdvListener implements Listener {
             DAO.updatePlayer(playerLow);
             e.getPlayer().sendMessage(ChatColor.AQUA + "+1 Life for completing 50 Advancements");
         }
+        if(LowHP.isNameEnabled()) SetName.SetName(e.getPlayer());
     }
 }
