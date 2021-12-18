@@ -1,6 +1,6 @@
 name: ${project.name}
 version: ${project.version}
-main: itb.lowhp.LowHP
+main: com.danperad.lowhp.LowHP
 depend: [LowHPLib]
 api-version: 1.14
 commands:
