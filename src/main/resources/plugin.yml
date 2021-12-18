@@ -1,13 +1,5 @@
 name: ${project.name}
 version: ${project.version}
-main: itb.lowhp.LowHP
-depend: [LowHPLib]
+main: com.danperad.lowhpsetname.SetName
+depend: [LowHP]
 api-version: 1.14
-commands:
-  lowhp:
-    description: Player Command
-    usage: /LowHP [commands]
-  lowhpadm:
-    description: Admin Commands
-    usage: /LowHPAdm [commands] [Player]
-    permission: lowhp.admin
