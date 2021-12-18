@@ -1,9 +1,11 @@
 package com.danperad.lowhp.events;
 
 import com.danperad.lowhp.LowHP;
+import com.danperad.lowhplib.PlayerLow;
+import com.danperad.lowhplib.db.DAO;
 import org.bukkit.GameMode;
-import org.bukkit.Statistic;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
@@ -13,11 +15,11 @@ public class PlayerDeathListener implements Listener {
     int lifes = LowHP.getConf().getInt("lifes");
     double hpafter = LowHP.getConf().getDouble("hpAfter");
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerDeath(PlayerDeathEvent e){
-        int hp = e.getEntity().getStatistic(Statistic.DEATHS);
         if(hardLife) {
-            if (hp > lifes && after) {
+            PlayerLow playerLow = DAO.getPlayer(e.getEntity().getUniqueId().toString());
+            if (playerLow.getLifes() > lifes && after) {
                 e.getEntity().setMaxHealth(hpafter);
             } else
                 e.getEntity().setGameMode(GameMode.SPECTATOR);

@@ -6,7 +6,7 @@
 
     <groupId>com.danperad</groupId>
     <artifactId>LowHP</artifactId>
-    <version>1.0.6-RELEASE</version>
+    <version>1.1.0-R</version>
     <packaging>jar</packaging>
 
     <name>LowHP</name>
@@ -69,6 +69,13 @@
             <artifactId>spigot-api</artifactId>
             <version>1.17-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.danperad.lowhplib</groupId>
+            <artifactId>LowHPLib</artifactId>
+            <version>1.0.0-R</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/lib/LowHPLib.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

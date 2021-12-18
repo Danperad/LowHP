@@ -18,13 +18,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class LowHP extends JavaPlugin {
     private static FileConfiguration config;
     Logger log = this.getLogger();
-    private static boolean isEnabled = false;
     public static FileConfiguration getConf() {
         return config;
-    }
-
-    public static boolean getPluginSetName(){
-        return isEnabled;
     }
 
     /*protected static void SetName(Player player) {
@@ -49,31 +44,18 @@ public final class LowHP extends JavaPlugin {
     private void CreateFile() {
         File dir = getDataFolder();
         dir.mkdir();
-        File conf = new File("plugins/LowHP/config.yml");
-        if (!conf.exists()) {
-            this.getConfig().set("hardLife", true); // Жизни в минус
-            this.getConfig().set("lifeAfterDeath", false); // Жизнь после смерти
-            this.getConfig().set("hp", 2); // Количество здоровья до
-            this.getConfig().set("hpAfter", 20); // Количество здоровья после
-            this.getConfig().set("lifes", 9); // Количество жизней
-            this.getConfig().set("advsForLife", 1); // Достижений для жизни ( >= 1 )
-            try {
-                conf.createNewFile();
-                this.getConfig().save(conf);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
     public void onEnable() {
         log.info("Start load...");
+        if (this.getServer().getPluginManager().getPlugin("LowHPLib") == null) {
+            log.info("LowHPLib dont installed");
+            return;
+        }
         CreateFile();
         config = this.getConfig();
-        for (Plugin p : getServer().getPluginManager().getPlugins()) {
-            if (p.getName().equalsIgnoreCase("lowhpsetname")) isEnabled = true;
-        }
+
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerGetAdvListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);

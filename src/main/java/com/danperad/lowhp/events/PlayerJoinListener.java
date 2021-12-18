@@ -2,6 +2,7 @@ package com.danperad.lowhp.events;
 
 import com.danperad.lowhp.LowHP;
 import org.bukkit.Statistic;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -15,7 +16,7 @@ public class PlayerJoinListener implements Listener {
         int time = e.getPlayer().getStatistic(Statistic.LEAVE_GAME);
         double maxhp = e.getPlayer().getMaxHealth();
         if(time == 0 || (maxhp != hp && maxhp != hpafter)){
-            e.getPlayer().setMaxHealth(hp);
+            e.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(hp);
         }
     }
 }
