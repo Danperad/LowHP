@@ -15,7 +15,7 @@ public class PlayerGetAdvListener implements Listener {
     int lifes = LowHP.getConf().getInt("lifes");
     int advforlife = LowHP.getConf().getInt("advsForLife");
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler
     public void achivmentGet(PlayerAdvancementDoneEvent e){
         String advName = e.getAdvancement().getKey().getKey();
         if (advName.startsWith("recipes/") || advName.startsWith("technical/")) return;
