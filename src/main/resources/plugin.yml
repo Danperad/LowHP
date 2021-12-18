@@ -1,5 +1,5 @@
 name: ${project.name}
 version: ${project.version}
-main: com.danperad.lowhpsetname.SetName
+main: com.danperad.lowhpsetname.LowHPSetName
 depend: [LowHP]
 api-version: 1.14
