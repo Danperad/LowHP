@@ -2,4 +2,5 @@ name: ${project.name}
 version: ${project.version}
 main: com.danperad.lowhpsetname.LowHPSetName
 depend: [LowHPLib]
+loadbefore: [LowHP]
 api-version: 1.14

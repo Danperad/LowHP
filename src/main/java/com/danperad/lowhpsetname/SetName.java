@@ -13,10 +13,15 @@ public class SetName {
         int adv = playerLow.getAdv();
         String twoname;
         if (player.getWorld().getName().equals("world")) {
+            player.setDisplayName(ChatColor.GREEN + playerName);
             twoname = ChatColor.GREEN + playerName + " " + ChatColor.YELLOW + adv;
         } else if (player.getWorld().getName().equals("world_nether")) {
+            player.setDisplayName(ChatColor.RED + playerName);
             twoname = ChatColor.RED + playerName + " " + ChatColor.YELLOW + adv;
-        } else twoname = ChatColor.DARK_PURPLE + playerName + " " + ChatColor.YELLOW + adv;
+        } else {
+            player.setDisplayName(ChatColor.DARK_PURPLE + playerName);
+            twoname = ChatColor.DARK_PURPLE + playerName + " " + ChatColor.YELLOW + adv;
+        }
         player.setPlayerListName(ChatColor.LIGHT_PURPLE + "[" + lifes + "] " + twoname);
     }
 }
