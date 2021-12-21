@@ -17,7 +17,7 @@ public class PlayerDeathListener implements Listener {
     int lifes = LowHP.getConf().getInt("lifes");
     double hpafter = LowHP.getConf().getDouble("hpAfter");
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e){
         if(hardLife) {
             PlayerLow playerLow = DAO.getPlayer(e.getEntity().getUniqueId().toString());
