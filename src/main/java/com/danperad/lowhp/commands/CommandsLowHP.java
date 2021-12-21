@@ -1,6 +1,7 @@
 package com.danperad.lowhp.commands;
 
 import com.danperad.lowhp.LowHP;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,7 +15,7 @@ public class CommandsLowHP implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("lowhp")) {
             if ("outme".equals(args[0])) {
-                if (sender.getServer().getPlayer(sender.getName()).getMaxHealth() < hpafter && !hardLife && after) {
+                if (sender.getServer().getPlayer(sender.getName()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() < hpafter && !hardLife && after) {
                     Player target;
                     if (sender instanceof Player) {
                         target = (Player) sender;
@@ -24,7 +25,7 @@ public class CommandsLowHP implements CommandExecutor {
                         sender.sendMessage("Неверный формат");
                         return true;
                     }
-                    target.setMaxHealth(hpafter);
+                    target.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(hpafter);
                     target.setHealth(hpafter);
                     sender.sendMessage("Complete!");
                 } else {

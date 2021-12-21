@@ -5,6 +5,7 @@ import com.danperad.lowhplib.PlayerLow;
 import com.danperad.lowhplib.db.DAO;
 import com.danperad.lowhpsetname.SetName;
 import org.bukkit.ChatColor;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,9 +32,9 @@ public class CommandsLowHPAdmin implements CommandExecutor {
                             DAO.updatePlayer(playerLow);
                             if(LowHP.isNameEnabled()) SetName.SetName(target);
                             target.getPlayer().sendMessage(ChatColor.GRAY + "Administrators added " + lifes + " lives to you");
-                            if (playerLow.getLifes() > 0 && hardLife) target.setMaxHealth(hp);
+                            if (playerLow.getLifes() > 0 && hardLife) target.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(hp);
                             else if (playerLow.getLifes() <= 0 && hardLife && after) {
-                                target.setMaxHealth(hpafter);
+                                target.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(hpafter);
                                 target.setHealth(hpafter);
                             } else {
                                 target.setMaxHealth(hp);
