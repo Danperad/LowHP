@@ -6,7 +6,7 @@ import org.sqlite.JDBC;
 import java.sql.*;
 
 public class DAO {
-    private static final String CON_STR = "jdbc:sqlite:.\\world\\lowhp.sqlite";
+    private static final String CON_STR = "jdbc:sqlite:./world/lowhp.db";
 
     private static Connection connection;
 
